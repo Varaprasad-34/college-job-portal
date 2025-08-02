@@ -1,0 +1,57 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+logs/**/*.log
+
+# Build outputs
+dist/
+build/
+coverage/
+.next/
+out/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+
+# Misc
+*.tgz
+*.bak
+*.tmp
+*.orig
+
+# React
+*.cache/
+.cache/
+.eslintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional: Ignore test reports
+test-output/
+
+# Optional: PM2 logs
+pids
+*.pid
+*.seed
+
+# Optional: Mongo dump
+dump/
