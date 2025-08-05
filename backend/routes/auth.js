@@ -175,7 +175,6 @@ router.post(
 );
 
 // password reset routes
-// @route   POST /api/auth/change-password
 router.put(
   '/change-password',
   [

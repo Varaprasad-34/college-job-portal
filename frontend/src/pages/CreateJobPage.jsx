@@ -71,22 +71,16 @@ const CreateJobPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-lg shadow-lg p-8">
+    <div className="min-h-screen py-10 px-4">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 sm:p-10">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Post a New Job
-          </h1>
-          <p className="text-gray-600 ">
-            Share a job opportunity with your college community
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">Post a New Job</h1>
+          <p className="text-gray-600 text-sm">Share a job opportunity with your college community</p>
         </div>
-        
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Job Information
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Job Information</h2>
 
             <div className="grid md:grid-cols-2 gap-4">
               <InputField
@@ -101,7 +95,6 @@ const CreateJobPage = () => {
                   },
                 })}
               />
-
               <InputField
                 label="Company *"
                 placeholder="e.g. Tech Corp Inc."
@@ -159,7 +152,7 @@ const CreateJobPage = () => {
                   },
                 })}
                 rows={6}
-                className="input"
+                className="input w-full"
                 placeholder="Provide a detailed description..."
               />
               {errors.description && (
@@ -171,9 +164,7 @@ const CreateJobPage = () => {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Salary Range (Optional)
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Salary Range (Optional)</h2>
             <div className="grid md:grid-cols-2 gap-4">
               <InputField
                 label="Minimum Salary ($)"
@@ -195,14 +186,13 @@ const CreateJobPage = () => {
             </div>
           </div>
 
+          {/* Skills */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Required Skills
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Required Skills</h2>
             {skillFields.map((field, index) => (
               <div key={field.id} className="flex items-center space-x-2">
                 <InputField
-                  placeholder="e.g. JavaScript, React, Node.js"
+                  placeholder="e.g. JavaScript, React"
                   {...register(`skills.${index}`)}
                 />
                 {skillFields.length > 1 && (
@@ -226,16 +216,15 @@ const CreateJobPage = () => {
             </button>
           </div>
 
+          {/* Requirements */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Requirements
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Requirements</h2>
             {requirementFields.map((field, index) => (
               <div key={field.id} className="flex items-start space-x-2">
                 <textarea
                   {...register(`requirements.${index}`)}
                   rows={2}
-                  className="input flex-1"
+                  className="input w-full"
                   placeholder="e.g. Bachelor's degree in Computer Science"
                 />
                 {requirementFields.length > 1 && (
@@ -259,14 +248,13 @@ const CreateJobPage = () => {
             </button>
           </div>
 
+          {/* Benefits */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Benefits (Optional)
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Benefits (Optional)</h2>
             {benefitFields.map((field, index) => (
               <div key={field.id} className="flex items-center space-x-2">
                 <InputField
-                  placeholder="e.g. Health insurance, Remote work"
+                  placeholder="e.g. Health insurance"
                   {...register(`benefits.${index}`)}
                 />
                 {benefitFields.length > 1 && (
@@ -290,10 +278,9 @@ const CreateJobPage = () => {
             </button>
           </div>
 
+          {/* Application Details */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Application Details
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Application Details</h2>
 
             <div className="grid md:grid-cols-2 gap-4">
               <InputField
@@ -304,7 +291,7 @@ const CreateJobPage = () => {
                 {...register("contactEmail", {
                   required: "Contact email is required",
                   pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$/i,
                     message: "Invalid email address",
                   },
                 })}
@@ -329,18 +316,18 @@ const CreateJobPage = () => {
             </p>
           </div>
 
-          <div className="flex justify-between pt-6">
+          <div className="flex justify-between pt-4">
             <button
               type="button"
               onClick={() => navigate("/jobs")}
-              className="btn btn-secondary px-6 py-2"
+              className="bg-gray-200 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="btn btn-primary px-8 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-blue-600 text-white px-8 py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <div className="flex items-center">

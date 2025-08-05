@@ -125,7 +125,7 @@ router.put('/profile', [
       message: 'Profile updated successfully',
       user: user.toJSON()
     });
-      console.log(' Profile route hit');  // ADD THIS LINE
+      
 
 
   } catch (error) {

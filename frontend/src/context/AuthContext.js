@@ -12,7 +12,6 @@ export const useAuth = () => {
   return context;
 };
 
-// Configure axios defaults
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 axios.defaults.baseURL = API_BASE_URL;
 
@@ -21,37 +20,48 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
-  // Set token in axios headers
+  // ✅ Set Axios Authorization header when token is set
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      loadUser();
     } else {
       delete axios.defaults.headers.common['Authorization'];
-      setLoading(false);
     }
   }, [token]);
 
-  const loadUser = async () => {
-    try {
-      const response = await axios.get('/auth/me');
-      setUser(response.data.user);
-    } catch (error) {
-      console.error('Load user error:', error);
-      logout(); // Invalid token, logout user
-    } finally {
-      setLoading(false);
-    }
-  };
+  // ✅ Load user ONLY after initial mount if token exists
+  useEffect(() => {
+    const autoLogin = async () => {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get('/auth/me');
+        setUser(response.data.user);
+      } catch (error) {
+        console.error('Load user error:', error);
+        logout(); // auto-logout on bad token
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    autoLogin();
+  }, []); // ✅ Empty deps = only run once on mount
 
   const login = async (email, password) => {
     try {
       const response = await axios.post('/auth/login', { email, password });
       const { token: newToken, user: userData } = response.data;
 
+      // ✅ Set token in localStorage and state
       localStorage.setItem('token', newToken);
       setToken(newToken);
       setUser(userData);
+
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
 
       toast.success('Login successful!');
       return { success: true };
@@ -71,12 +81,15 @@ export const AuthProvider = ({ children }) => {
       setToken(newToken);
       setUser(newUser);
 
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+
       toast.success('Registration successful!');
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 
-                    error.response?.data?.errors?.[0]?.msg || 
-                    'Registration failed';
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.errors?.[0]?.msg ||
+        'Registration failed';
       toast.error(message);
       return { success: false, message };
     }
@@ -111,12 +124,8 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateProfile,
-    isAuthenticated: !!token && !!user
+    isAuthenticated: !!token && !!user,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
