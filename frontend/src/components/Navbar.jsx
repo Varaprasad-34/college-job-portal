@@ -12,12 +12,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 shadow-lg">
+    <nav className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link to="/" className="text-white text-xl font-bold">
-            College Job Portal
+          <Link to="/jobs" className="text-white text-xl font-bold">
+            Elevate Box Job Portal
           </Link>
 
           {/* Navigation Links */}
@@ -40,7 +40,7 @@ const Navbar = () => {
                   to="/my-jobs"
                   className="text-white hover:text-blue-200 transition duration-200"
                 >
-                  My Jobs
+                  Posted by Me
                 </Link>
                 <Link
                   to="/my-applications"
@@ -54,23 +54,23 @@ const Navbar = () => {
                   <div className="flex items-center space-x-3">
                     <Link
                       to="/profile"
-                      className="text-white hover:text-blue-200 transition duration-200"
+                      className="text-white hover:text-white-200 transition duration-200"
                     >
                       <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
                           <span className="text-sm font-medium">
                             {user?.name?.charAt(0)?.toUpperCase()}
                           </span>
                         </div>
                         <span className="hidden md:block">{user?.name}</span>
-                        <span className="hidden md:block text-blue-200 text-sm">
-                          ({user?.role})
+                        <span className="hidden md:block text-white-600 text-sm">
+                          ({user?.role.charAt(0).toUpperCase() + user?.role.slice(1)})
                         </span>
                       </div>
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md transition duration-200"
+                      className="px-3 py-1 bg-gray-700 text-white flex justify-center items-center rounded-md hover:bg-gray-900 transition duration-200"
                     >
                       Logout
                     </button>
@@ -87,7 +87,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md transition duration-200"
+                  className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition duration-200"
                 >
                   Register
                 </Link>

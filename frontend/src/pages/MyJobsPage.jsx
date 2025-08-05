@@ -7,12 +7,13 @@ import {
   UserGroupIcon,
   CalendarIcon 
 } from '@heroicons/react/24/outline';
-import { userAPI, handleAPIError } from '../utils/api';
+import { userAPI, jobAPI, handleAPIError } from '../utils/api';
 import toast from 'react-hot-toast';
 
 const MyJobsPage = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deletingJobId, setDeletingJobId] = useState(null);
 
   useEffect(() => {
     fetchMyJobs();
@@ -28,6 +29,26 @@ const MyJobsPage = () => {
       toast.error(handleAPIError(error));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteJob = async (jobId) => {
+    if (!window.confirm('Are you sure you want to delete this job? This action cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      setDeletingJobId(jobId);
+      await jobAPI.deleteJob(jobId);
+      toast.success('Job deleted successfully');
+      
+      // Remove the deleted job from the state
+      setJobs(prevJobs => prevJobs.filter(job => job._id !== jobId));
+    } catch (error) {
+      console.error('Error deleting job:', error);
+      toast.error(handleAPIError(error));
+    } finally {
+      setDeletingJobId(null);
     }
   };
 
@@ -106,7 +127,7 @@ const MyJobsPage = () => {
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium $${
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       job.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
                       {job.isActive ? 'Active' : 'Inactive'}
@@ -165,7 +186,7 @@ const MyJobsPage = () => {
                               </p>
                             </div>
                           </div>
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium $${
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             application.status === 'pending' ? 'bg-blue-100 text-blue-800' :
                             application.status === 'reviewed' ? 'bg-yellow-100 text-yellow-800' :
                             application.status === 'accepted' ? 'bg-green-100 text-green-800' :
@@ -206,9 +227,15 @@ const MyJobsPage = () => {
                       <PencilIcon className="h-3 w-3 mr-1" />
                       Edit
                     </button>
-                    <button className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 transition duration-200 flex items-center">
+                    <button 
+                      onClick={() => handleDeleteJob(job._id)}
+                      disabled={deletingJobId === job._id}
+                      className={`bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 transition duration-200 flex items-center ${
+                        deletingJobId === job._id ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    >
                       <TrashIcon className="h-3 w-3 mr-1" />
-                      Delete
+                      {deletingJobId === job._id ? 'Deleting...' : 'Delete'}
                     </button>
                   </div>
                 </div>

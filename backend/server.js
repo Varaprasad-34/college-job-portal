@@ -4,12 +4,13 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
+const app = express();
+
 
 const authRoutes = require('./routes/auth');
 const jobRoutes = require('./routes/jobs');
 const userRoutes = require('./routes/users');
 
-const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Security middleware
