@@ -1,4 +1,4 @@
-# College Job Portal - MERN Stack Application
+# Alumin Student Job portal- MERN Stack Application
 
 A comprehensive job portal application built exclusively for college students and alumni using the MERN (MongoDB, Express.js, React.js, Node.js) stack.
 
